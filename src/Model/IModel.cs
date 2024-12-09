@@ -9,9 +9,10 @@ namespace SokobanGame.src.Model
 {
     internal interface IModel
     {
-        public void nextMove();
+        public void setNewLevel(int level);
+        public void nextMove(Command command);
         public void stopGame();
         public void resumeGame();
-        public List<IGameObject> getMap();
+        public List<GameObject> getMap();
     }
 }

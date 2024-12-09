@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SokobanGame.src
+namespace SokobanGame.src.Model
 {
-    internal enum Command
+    internal enum Event
     {
-        Left, Right, Top, Bottom
+        Win, GameOn
     }
 }

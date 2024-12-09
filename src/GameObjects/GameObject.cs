@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal interface IGameObject
+    internal abstract class GameObject
     {
+        public GameObject(int x, int y)
+        {
+            Pos = new Position(x, y);
+        }
         public Position Pos { get; set; } 
     }
 }

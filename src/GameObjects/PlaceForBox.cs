@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class PlaceForBox : IGameObject
+    internal class PlaceForBox : GameObject
     {
-        public Position Pos { get; set; }
+        public PlaceForBox(int x, int y) : base(x, y) { }
     }
 }

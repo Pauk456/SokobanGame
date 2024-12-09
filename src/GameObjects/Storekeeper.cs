@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class Storekeeper : IGameObject
+    internal class Storekeeper : MovableGameObjects
     {
-        public Position Pos { get; set; }
+        public Storekeeper(int x, int y) : base(x, y) { }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class Wall : IGameObject
+    internal class Wall : GameObject
     {
-        public Position Pos { get; set; }
+        public Wall(int x, int y) : base(x, y) { }
     }
 }

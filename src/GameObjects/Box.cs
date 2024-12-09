@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class Box : IGameObject
+    internal class Box : MovableGameObjects
     {
+        public Box(int x, int y) : base(x, y) { }
+        public bool OnPlaceForBox { get; set; }
         public Position Pos { get; set; }
     }
 }

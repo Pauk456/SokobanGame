@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal interface EmptySpace : IGameObject
+    internal class EmptySpace : GameObject
     {
-        public Position Pos { get; set; }
+        public EmptySpace(int x, int y) : base(x, y) { }
     }
 }
