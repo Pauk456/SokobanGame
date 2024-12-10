@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,39 +9,70 @@ using SokobanGame.src.GameObjects;
 
 namespace SokobanGame.src.Model
 {
-    // Сделать так чтобы лист который мы возвращаем нельзя было изменять и добавление было только через MapData
     internal class MapData
     {
+        public int SizeX { get; private set; }
+        public int SizeY { get; private set; }
+        public GameObject[,] Map {  get; private set; }
         public MapData(int sizeX, int sizeY) 
         {
             SizeX = sizeX;
             SizeY = sizeY;
 
-            Walls = new List<Wall>();
-            Boxes = new List<Box>();
-            PlaceForBoxes = new List<PlaceForBox>();
-            EmptySpaces = new List<EmptySpace>();
+            Map = new GameObject[SizeX, SizeY];
         }
-        public int SizeX { get; private set; }
-        public int SizeY { get; private set; }
-        public Storekeeper Storekeeper { get; set; }
-        public List<Wall> Walls { get; set; }
-        public List<Box> Boxes { get; set; }
-        public List<PlaceForBox> PlaceForBoxes { get; set; }
-        public List<EmptySpace> EmptySpaces { get; set; }
-        public List<GameObject> Map
+
+        public List<Box> Boxes
         {
             get
             {
-                List<GameObject> list = new List<GameObject>();
-                list.AddRange(EmptySpaces);
-                list.AddRange(PlaceForBoxes);
-                list.AddRange(Boxes);
-                list.AddRange(Walls);
-                list.Add(Storekeeper);
-                return list;
+                var boxes = new List<Box>();
+
+                foreach (var obj in Map)
+                {
+                    if (obj is Box)
+                    {
+                        boxes.Add((Box)obj);
+                    }
+                }
+
+                return boxes;
             }
             private set { }
+        }
+
+        public Storekeeper Storekeeper
+        {
+            get
+            {
+                foreach (var obj in Map)
+                {
+                    if (obj is Storekeeper)
+                    {
+                        return (Storekeeper)obj;
+                    }
+                }
+
+                throw new Exception("storekeeper lost");
+            }
+            private set { }
+        }
+
+        public Position findStorekeeperPos()
+        {
+            for(int x = 0; x < Map.GetLength(0); x++)
+            {
+                for(int y = 0; y < Map.GetLength(1); y++)
+                {
+                    var obj = Map[x, y];
+                    if (obj is Storekeeper)
+                    {
+                        return new Position(x, y);
+                    }
+                }
+            }
+
+            throw new Exception("storekeeper lost");
         }
     }
 }

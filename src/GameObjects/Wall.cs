@@ -8,6 +8,5 @@ namespace SokobanGame.src.GameObjects
 {
     internal class Wall : GameObject
     {
-        public Wall(int x, int y) : base(x, y) { }
     }
 }

@@ -7,22 +7,20 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.Model
 {
-    internal class MoveChecker
+    internal class WinLogic
     {
         private MapData mapData;
-        public MoveChecker(MapData mapData) 
+        public WinLogic(MapData mapData)
         {
             this.mapData = mapData;
         }
 
-        public bool isThisMoveCorrect(Position position)
+        public bool isWin()
         {
-            foreach (Wall wall in mapData.Walls)
+            foreach (Box box in mapData.Boxes)
             {
-                if(position == wall.Pos)
-                {
+                if (box.OnPlaceForBox == false)
                     return false;
-                }
             }
 
             return true;

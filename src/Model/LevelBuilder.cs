@@ -14,63 +14,35 @@ namespace SokobanGame.src.Model
             return buildLevel1();
         }
 
+        private static void buildBorder(MapData mapData)
+        {
+            for (int x = 0; x < mapData.Map.GetLength(0); x++)
+            {
+                for (int y = 0; y < mapData.Map.GetLength(1); y++)
+                {
+                    if (x == 0 || y == 0)
+                    {
+                        mapData.Map[x, y] = new Wall();
+                    }
+                    else
+                    {
+                        mapData.Map[x, y] = new EmptySpace();
+                    }
+                }
+            }
+        }
+
         private static MapData buildLevel1()
         {
             MapData mapData = new MapData(6, 6);
 
-            mapData.Storekeeper = new Storekeeper(1, 1);
-
-            mapData.Boxes.Add(new Box(2, 2));
-            mapData.PlaceForBoxes.Add(new PlaceForBox(4, 4));
-
-            mapData.Walls.Add(new Wall(0, 0));
-            mapData.Walls.Add(new Wall(1, 0));
-            mapData.Walls.Add(new Wall(2, 0));
-            mapData.Walls.Add(new Wall(3, 0));
-            mapData.Walls.Add(new Wall(4, 0));
-            mapData.Walls.Add(new Wall(5, 0));
-
-            mapData.Walls.Add(new Wall(0, 1));
-            mapData.Walls.Add(new Wall(0, 2));
-            mapData.Walls.Add(new Wall(0, 3));
-            mapData.Walls.Add(new Wall(0, 4));
-            mapData.Walls.Add(new Wall(0, 5));
-
-            mapData.Walls.Add(new Wall(5, 1));
-            mapData.Walls.Add(new Wall(5, 2));
-            mapData.Walls.Add(new Wall(5, 3));
-            mapData.Walls.Add(new Wall(5, 4));
-            mapData.Walls.Add(new Wall(5, 5));
-
-            mapData.Walls.Add(new Wall(1, 5));
-            mapData.Walls.Add(new Wall(2, 5));
-            mapData.Walls.Add(new Wall(3, 5));
-            mapData.Walls.Add(new Wall(4, 5));
-
-            addEmptySpace(mapData);
-
+            buildBorder(mapData);
+            
+            mapData.Map[2, 2] = new Storekeeper();
+            mapData.Map[3, 3] = new Box();
+            mapData.Map[4, 5] = new PlaceForBox();
+    
             return mapData;
-        }
-
-        private static void addEmptySpace(MapData mapData)
-        {
-            Storekeeper storekeeper = mapData.Storekeeper;
-
-            for (int x = 0; x < mapData.SizeX; x++)
-                for (int y = 0; y < mapData.SizeY; y++)
-                    foreach (Wall wall in mapData.Walls)
-                        foreach (Box box in mapData.Boxes)
-                            foreach (PlaceForBox placeForBox in mapData.PlaceForBoxes)
-                            {
-                                Position position = new Position(x, y);
-                                if (  !(position == placeForBox.Pos || 
-                                        position == box.Pos ||
-                                        position == wall.Pos ||
-                                        position == storekeeper.Pos))
-                                {
-                                    mapData.EmptySpaces.Add(new EmptySpace(x, y));
-                                }
-                            }
         }
     }
 }

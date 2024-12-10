@@ -8,6 +8,5 @@ namespace SokobanGame.src.GameObjects
 {
     internal class EmptySpace : GameObject
     {
-        public EmptySpace(int x, int y) : base(x, y) { }
     }
 }

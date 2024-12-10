@@ -8,6 +8,5 @@ namespace SokobanGame.src.GameObjects
 {
     internal class PlaceForBox : GameObject
     {
-        public PlaceForBox(int x, int y) : base(x, y) { }
     }
 }

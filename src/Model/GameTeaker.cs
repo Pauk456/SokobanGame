@@ -19,15 +19,15 @@ namespace SokobanGame.src.Model
 
         private static readonly int timerInterval = 500;
 
-        private int TeakCount;
+        private long TeakCount;
 
         private ConcurrentQueue<Command> commandQueue;
 
         private MapData mapData;
 
-        private MoveChecker moveChecker;
+        private MoveLogic moveLogic;
 
-        private EventChecker eventChecker;
+        private WinLogic winLogic;
 
         public GameTeaker(MapData mapData)
         {
@@ -35,9 +35,12 @@ namespace SokobanGame.src.Model
             commandQueue = new ConcurrentQueue<Command>();
 
             this.mapData = mapData;
-            moveChecker = new MoveChecker(mapData);
-            eventChecker = new EventChecker(mapData);
+            moveLogic = new MoveLogic(mapData);
+            winLogic = new WinLogic(mapData);
+        }
 
+        public void start()
+        {
             var tm = new TimerCallback(gameTick);
             var timer = new Timer(tm, null, 0, timerInterval);
         }
@@ -57,12 +60,10 @@ namespace SokobanGame.src.Model
 
             if (isCommand)
             {
-                Position newPos = mapData.Storekeeper.move(command);
-
-                if (moveChecker.isThisMoveCorrect(newPos))
+                moveLogic.move(command);
+                if(winLogic.isWin())
                 {
-                    mapData.Storekeeper.Pos = newPos;
-                    _event = eventChecker.eventHendler(command, newPos);
+                    _event = Event.Win;
                 }
             }
 
