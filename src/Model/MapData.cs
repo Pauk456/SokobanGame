@@ -9,7 +9,7 @@ using SokobanGame.src.GameObjects;
 
 namespace SokobanGame.src.Model
 {
-    internal class MapData
+    public class MapData
     {
         public int SizeX { get; private set; }
         public int SizeY { get; private set; }

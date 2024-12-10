@@ -1,4 +1,5 @@
 ﻿using SokobanGame.src.GameObjects;
+using SokobanGame.src.Presenter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace SokobanGame.src.Model
 
         public event ModelDelegate EventModel;
 
-        public Model()
+        public Model(MapData mapData)
         { 
             mapData = LevelBuilder.buildLevel(0);
             gameTeaker = new GameTeaker(mapData);

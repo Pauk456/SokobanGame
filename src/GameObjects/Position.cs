@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class Position
+    public class Position
     {
         public Position(int x, int y)
         {

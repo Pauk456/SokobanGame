@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal abstract class GameObject
+    public abstract class GameObject
     {
     }
 }

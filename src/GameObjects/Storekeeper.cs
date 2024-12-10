@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class Storekeeper : GameObject
+    public class Storekeeper : GameObject
     {
     }
 }

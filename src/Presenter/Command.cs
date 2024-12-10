@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SokobanGame.src
+namespace SokobanGame.src.Presenter
 {
-    internal enum Command
+    public enum Command
     {
         Left, Right, Top, Bottom
     }

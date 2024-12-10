@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SokobanGame.src.GameObjects
 {
-    internal class PlaceForBox : GameObject
+    public class PlaceForBox : GameObject
     {
     }
 }

@@ -2,14 +2,23 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace SokobanGame
+using SokobanGame.src.Presenter;
+
+using SokobanGame.src.Model;
+
+namespace SokobanGame.src.View
 {
-    public class Game1 : Game
+    public class View : Game
     {
         private GraphicsDeviceManager _graphics;
+
         private SpriteBatch _spriteBatch;
 
-        public Game1()
+        public delegate void CommandDelegate(Command e);
+
+        public event CommandDelegate CommandEvent;
+
+        public View()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "../Content";
