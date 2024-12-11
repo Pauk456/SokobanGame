@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SokobanGame;
+using SokobanGame.src.Presenter;
 
 namespace ConsoleApp1
 {
@@ -12,8 +13,8 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            using var game = new SokobanGame.Game1();
-            game.Run();
+            var presenter = new Presenter();
+            presenter.startGame();
         }
     }
 }

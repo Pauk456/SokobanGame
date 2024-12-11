@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using SokobanGame.src.GameObjects;
 using SokobanGame.src.Presenter;
+using System.Timers;
 
 
 namespace SokobanGame.src.Model
@@ -18,7 +19,7 @@ namespace SokobanGame.src.Model
 
         public event GameTickerDelegate EventTicker;
 
-        private static readonly int timerInterval = 500;
+        private static readonly int timerInterval = 300;
 
         private long TeakCount;
 
@@ -29,6 +30,8 @@ namespace SokobanGame.src.Model
         private MoveLogic moveLogic;
 
         private WinLogic winLogic;
+
+        private System.Threading.Timer timer;
 
         public GameTeaker(MapData mapData)
         {
@@ -43,7 +46,7 @@ namespace SokobanGame.src.Model
         public void start()
         {
             var tm = new TimerCallback(gameTick);
-            var timer = new Timer(tm, null, 0, timerInterval);
+            timer = new System.Threading.Timer(tm, null, 0, timerInterval);
         }
 
         public void addMoveInQueue(Command command)
@@ -76,12 +79,12 @@ namespace SokobanGame.src.Model
 
         public void stopTimer()
         {
-            throw new NotImplementedException();
+            timer?.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         public void resumeTimer()
         {
-            throw new NotImplementedException();
+            timer?.Change(0, timerInterval);
         }
     }
 }

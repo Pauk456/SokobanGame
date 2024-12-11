@@ -21,7 +21,7 @@ namespace SokobanGame.src.Model
 
         public Model(MapData mapData)
         { 
-            mapData = LevelBuilder.buildLevel(0);
+            this.mapData  = mapData;
             gameTeaker = new GameTeaker(mapData);
             gameTeaker.EventTicker += OnTick;
         }
@@ -31,11 +31,6 @@ namespace SokobanGame.src.Model
             gameTeaker.start();
         }
 
-        public void setNewLevel(int level)
-        {
-            mapData = LevelBuilder.buildLevel(level);
-        }
-
         private void OnTick(Event e)
         {
             if(e == Event.Win)
@@ -43,10 +38,7 @@ namespace SokobanGame.src.Model
                 stopGame();
             }
 
-            if(EventModel != null)
-            {
-                EventModel(e);
-            }
+            EventModel?.Invoke(e);
         }
 
         public GameObject[,] getMap()

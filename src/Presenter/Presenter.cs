@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SokobanGame.src.Presenter;
 using SokobanGame.src.View;
 
 namespace SokobanGame.src.Presenter
@@ -14,32 +16,38 @@ namespace SokobanGame.src.Presenter
 
         private View.View view;
 
+        private MapData mapData;
+
         private int currentLevel;
 
         public Presenter() 
         {
             currentLevel = 1;
 
-            model = new Model.Model();
+            mapData = LevelBuilder.buildLevel(currentLevel);
+            model = new Model.Model(mapData);
             view = new View.View();
 
             model.EventModel += modelTickHeandler;
             view.CommandEvent += viewCommandHeandler;
+
+            view.UpdateMapData(mapData);
         }
 
         public void redraw()
         {
-            
+            view.UpdateMapData(mapData); // заглушка
         }
 
         public void startGame()
         {
             model.startGame();
+            view.Run();
         }
 
         public void setLevel(int level)
         {
-            model.setNewLevel(level);
+            mapData = LevelBuilder.buildLevel(currentLevel);
         }
 
         public void modelTickHeandler(Event e)
@@ -61,7 +69,7 @@ namespace SokobanGame.src.Presenter
 
         public void viewCommandHeandler(Command e) 
         {
-
+            model.nextMove(e);
         }
     }
 }

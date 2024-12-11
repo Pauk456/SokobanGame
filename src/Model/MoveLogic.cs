@@ -33,6 +33,8 @@ namespace SokobanGame.src.Model
         {
             var currentObject = mapData.Map[position.X, position.Y];
 
+            var currentPos = nextPosition(position, command);
+
             if (currentObject is Wall)
             {
                 return false;
@@ -41,7 +43,7 @@ namespace SokobanGame.src.Model
             {
                 var box = (Box)currentObject;
 
-                if(box.OnPlaceForBox || !moveBoxes(command, box, nextPosition(position, command)))
+                if(box.OnPlaceForBox || !moveBoxes(command, box, currentPos))
                     return false;
 
             }
@@ -52,7 +54,7 @@ namespace SokobanGame.src.Model
                 box.OnPlaceForBox = true;
             }
 
-            mapData.Map[position.X, position.Y] = offsetObject;
+            mapData.Map[currentPos.X, currentPos.Y] = offsetObject;
 
             return true;
         }

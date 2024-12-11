@@ -4,17 +4,16 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-
 using SokobanGame.src.GameObjects;
 
-namespace SokobanGame.src.Model
+namespace SokobanGame.src.Presenter
 {
     public class MapData
     {
         public int SizeX { get; private set; }
         public int SizeY { get; private set; }
-        public GameObject[,] Map {  get; private set; }
-        public MapData(int sizeX, int sizeY) 
+        public GameObject[,] Map { get; private set; }
+        public MapData(int sizeX, int sizeY)
         {
             SizeX = sizeX;
             SizeY = sizeY;
@@ -60,9 +59,9 @@ namespace SokobanGame.src.Model
 
         public Position findStorekeeperPos()
         {
-            for(int x = 0; x < Map.GetLength(0); x++)
+            for (int x = 0; x < Map.GetLength(0); x++)
             {
-                for(int y = 0; y < Map.GetLength(1); y++)
+                for (int y = 0; y < Map.GetLength(1); y++)
                 {
                     var obj = Map[x, y];
                     if (obj is Storekeeper)
