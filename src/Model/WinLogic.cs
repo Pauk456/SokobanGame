@@ -1,4 +1,4 @@
-﻿using SokobanGame.src.GameObjects;
+﻿using SokobanGame.src.Model.GameObjects;
 using SokobanGame.src.Presenter;
 using System;
 using System.Collections.Generic;

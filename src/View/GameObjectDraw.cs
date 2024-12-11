@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SokobanGame.src.GameObjects
+namespace SokobanGame.src.View
 {
-    public class PlaceForBox : GameObject
+    public enum GameObjectDraw
     {
+        Box, EmptySpace, PlaceForBox, Storekeeper, Wall, BoxOnPlaceForBox
     }
 }

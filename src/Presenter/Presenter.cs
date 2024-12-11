@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SokobanGame.src.Presenter;
 using SokobanGame.src.View;
+using SokobanGame.src.Model;
+using SokobanGame.src.Model.GameObjects;
 
 namespace SokobanGame.src.Presenter
 {
@@ -31,12 +33,49 @@ namespace SokobanGame.src.Presenter
             model.EventModel += modelTickHeandler;
             view.CommandEvent += viewCommandHeandler;
 
-            view.UpdateMapData(mapData);
+            redraw();
+        }
+
+        private GameObjectDraw[,] getDrawMap()
+        {
+            GameObjectDraw[,] drawMap = new GameObjectDraw[mapData.SizeX, mapData.SizeY];
+            for (int x = 0; x < mapData.SizeX; x++)
+            {
+                for (int y = 0; y < mapData.SizeY; y++)
+                {
+                    var obj = mapData.peekObj(x, y);
+                    if (obj is Box && ((Box)obj).OnPlaceForBox)
+                    {
+                        drawMap[x, y] = GameObjectDraw.BoxOnPlaceForBox;
+                    }
+                    else if (obj is Box)
+                    {
+                        drawMap[x, y] = GameObjectDraw.Box;
+                    }
+                    else if (obj is Storekeeper)
+                    {
+                        drawMap[x, y] = GameObjectDraw.Storekeeper;
+                    }
+                    else if (obj is Wall)
+                    {
+                        drawMap[x, y] = GameObjectDraw.Wall;
+                    }
+                    else if (obj is PlaceForBox)
+                    {
+                        drawMap[x, y] = GameObjectDraw.PlaceForBox;
+                    }
+                    else
+                    {
+                        drawMap[x, y] = GameObjectDraw.EmptySpace;
+                    }
+                }
+            }
+            return drawMap;
         }
 
         public void redraw()
         {
-            view.UpdateMapData(mapData); // заглушка
+            view.UpdateMapData(getDrawMap());
         }
 
         public void startGame()

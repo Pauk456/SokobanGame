@@ -1,4 +1,4 @@
-﻿using SokobanGame.src.GameObjects;
+﻿using SokobanGame.src.Model.GameObjects;
 using SokobanGame.src.Presenter;
 using System;
 using System.Collections.Generic;
@@ -39,11 +39,6 @@ namespace SokobanGame.src.Model
             }
 
             EventModel?.Invoke(e);
-        }
-
-        public GameObject[,] getMap()
-        {
-            return mapData.Map;
         }
 
         public void nextMove(Command command)

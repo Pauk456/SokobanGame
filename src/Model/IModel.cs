@@ -1,4 +1,4 @@
-﻿using SokobanGame.src.GameObjects;
+﻿using SokobanGame.src.Model.GameObjects;
 using SokobanGame.src.Presenter;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,5 @@ namespace SokobanGame.src.Model
         public void nextMove(Command command);
         public void stopGame();
         public void resumeGame();
-        public GameObject[,] getMap();
     }
 }

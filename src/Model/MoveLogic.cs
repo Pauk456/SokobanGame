@@ -1,4 +1,4 @@
-﻿using SokobanGame.src.GameObjects;
+﻿using SokobanGame.src.Model.GameObjects;
 using SokobanGame.src.Presenter;
 using System;
 using System.Collections.Generic;
@@ -16,25 +16,10 @@ namespace SokobanGame.src.Model
         {
             this.mapData = mapData;
         }
-
-        private Position nextPosition(Position position, Command command)
+        private bool moveRec(Command command, MoveableObject offsetObject, Position position)
         {
-            switch (command)
-            {
-                case Command.Left: return new Position(position.X - 1, position.Y);
-                case Command.Right: return new Position(position.X + 1, position.Y);
-                case Command.Top: return new Position(position.X, position.Y - 1);
-                case Command.Bottom: return new Position(position.X, position.Y + 1);
-                default: throw new ArgumentException("Not supported command");
-            }
-        }
-
-        private bool moveBoxes(Command command, GameObject offsetObject, Position position)
-        {
-            var currentObject = mapData.Map[position.X, position.Y];
-
-            var currentPos = nextPosition(position, command);
-
+            var currentObject = mapData.peekObj(position);
+            
             if (currentObject is Wall)
             {
                 return false;
@@ -42,30 +27,49 @@ namespace SokobanGame.src.Model
             else if (currentObject is Box)
             {
                 var box = (Box)currentObject;
+                var newPos = box.tryMove(command);
 
-                if(box.OnPlaceForBox || !moveBoxes(command, box, currentPos))
+                if (moveRec(command, box, newPos))
+                {
+                    mapData.rmObj(position);
+
+                    mapData.addObj(position, offsetObject);
+                    offsetObject.move(position);
+                    if (offsetObject is Box)
+                    {
+                        ((Box)offsetObject).updateStatus(mapData);
+                    }
+                    
+
+                    return true;
+                }
+                else 
+                {
                     return false;
-
+                }
             }
-
-            if(currentObject is PlaceForBox && offsetObject is Box)
+            else
             {
-                var box = (Box)currentObject;
-                box.OnPlaceForBox = true;
+                mapData.addObj(position, offsetObject);
+                offsetObject.move(position);
+
+                if (offsetObject is Box)
+                {
+                    ((Box)offsetObject).updateStatus(mapData);
+                }
+
+                return true;
             }
-
-            mapData.Map[currentPos.X, currentPos.Y] = offsetObject;
-
-            return true;
         }
 
         public void move(Command command)
         {
-            Position privPos = mapData.findStorekeeperPos();
+            Position newPos = mapData.Storekeeper.tryMove(command);
+            Position privPos = mapData.Storekeeper.Position;
 
-            if (moveBoxes(command, mapData.Storekeeper, privPos))
+            if (moveRec(command, mapData.Storekeeper, newPos))
             {
-                mapData.Map[privPos.X, privPos.Y] = new EmptySpace();
+                mapData.rmObj(privPos);
             }
         }
     }

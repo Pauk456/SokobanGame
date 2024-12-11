@@ -1,9 +1,7 @@
-﻿using SokobanGame.src.GameObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using SokobanGame.src.Model;
+using SokobanGame.src.Model.GameObjects;
 
 namespace SokobanGame.src.Presenter
 {
@@ -11,64 +9,74 @@ namespace SokobanGame.src.Presenter
     {
         public static MapData buildLevel(int level)
         {
-            return buildLevel2();
+            return buildLevelFromFile("../../../Content/Levels/level" + level + ".txt");
         }
 
         private static void buildBorder(MapData mapData)
         {
-            for (int x = 0; x < mapData.Map.GetLength(0); x++)
+            for (int x = 0; x < mapData.SizeX; x++)
             {
-                for (int y = 0; y < mapData.Map.GetLength(1); y++)
+                for (int y = 0; y < mapData.SizeY; y++)
                 {
                     if (x == 0 || y == 0 || x == (mapData.SizeX - 1) || y == (mapData.SizeY - 1))
                     {
-                        mapData.Map[x, y] = new Wall();
+                        mapData.addObj(x, y, new Wall(x, y));
                     }
                     else
                     {
-                        mapData.Map[x, y] = new EmptySpace();
+                        mapData.addObj(x, y, new EmptySpace(x, y));
                     }
                 }
             }
         }
-
-        private static MapData buildLevel1()
+        private static MapData buildTestLevel()
         {
-            MapData mapData = new MapData(6, 6);
+            var mapData = new MapData(6, 6);
 
             buildBorder(mapData);
 
-            mapData.Map[2, 2] = new Storekeeper();
-            mapData.Map[3, 3] = new Box();
-            mapData.Map[3, 2] = new PlaceForBox();
+            mapData.addObj(2, 2, new Storekeeper(2, 2));
+            mapData.addObj(3, 3, new Box(3, 3));
+            mapData.addObj(3, 2, new PlaceForBox(3, 2));
 
             return mapData;
         }
 
-        private static MapData buildLevel2()
+        private static MapData buildLevelFromFile(string filePath)
         {
-            MapData mapData = new MapData(40, 40);
+            var lines = File.ReadAllLines(filePath);
 
-            buildBorder(mapData);
+            int sizeX = lines[0].Length;
+            int sizeY = lines.Length;
 
-            mapData.Map[5, 5] = new Storekeeper();
+            var mapData = new MapData(sizeX, sizeY);
 
-            mapData.Map[10, 10] = new Box();
-            mapData.Map[12, 10] = new Box();
-            mapData.Map[15, 15] = new Box();
-
-            mapData.Map[8, 8] = new PlaceForBox();
-            mapData.Map[14, 14] = new PlaceForBox();
-            mapData.Map[17, 17] = new PlaceForBox();
-
-            for (int x = 20; x < 30; x++)
+            for (int y = 0; y < sizeY; y++)
             {
-                mapData.Map[x, 20] = new Wall();
-            }
-
-            for (int y = 25; y < 35; y++)
-            {
-                mapData.Map[25, y] = new Wall();
+                for (int x = 0; x < sizeX; x++)
+                {
+                    char tile = lines[y][x];
+                    switch (tile)
+                    {
+                        case '1':
+                            mapData.addObj(x, y, new Storekeeper(x, y));
+                            break;
+                        case '2':
+                            mapData.addObj(x, y, new Box(x, y));
+                            break;
+                        case '3':
+                            mapData.addObj(x, y, new PlaceForBox(x, y));
+                            break;
+                        case '4':
+                            mapData.addObj(x, y, new EmptySpace(x, y));
+                            break;
+                        case '5':
+                            mapData.addObj(x, y, new Wall(x, y));
+                            break;
+                        default:
+                            throw new Exception("Error in reading map file");
+                    }
+                }
             }
 
             return mapData;

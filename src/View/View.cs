@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SokobanGame.src.Model;
-using SokobanGame.src.GameObjects;
 using SokobanGame.src.Presenter;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,7 +9,7 @@ namespace SokobanGame.src.View
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private MapData _mapData;
+        private GameObjectDraw[,] map;
 
         public delegate void CommandDelegate(Command e);
         public event CommandDelegate CommandEvent;
@@ -21,6 +19,7 @@ namespace SokobanGame.src.View
         private Texture2D _emptySpaceTexture;
         private Texture2D _wallTexture;
         private Texture2D _placeForBoxTexture;
+        private Texture2D _pressedBoxTexture;
 
         private KeyboardState previousKeyboardState;
 
@@ -29,22 +28,23 @@ namespace SokobanGame.src.View
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
         }
 
-        public void UpdateMapData(MapData mapData)
+        public void UpdateMapData(GameObjectDraw[,] map)
         {
-            _mapData = mapData;
+            this.map = map;
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _boxTexture = Content.Load<Texture2D>("box");  
+            _boxTexture = Content.Load<Texture2D>("box_");
+            _pressedBoxTexture = Content.Load<Texture2D>("pressedBox");
             _storekeeperTexture = Content.Load<Texture2D>("storekeeper"); 
             _emptySpaceTexture = Content.Load<Texture2D>("emptySpace");     
             _wallTexture = Content.Load<Texture2D>("wall");
@@ -96,33 +96,39 @@ namespace SokobanGame.src.View
 
             _spriteBatch.Begin();
 
-            if (_mapData != null)
+            if (map != null)
             {
-                for (int x = 0; x < _mapData.SizeX; x++)
-                {
-                    for (int y = 0; y < _mapData.SizeY; y++)
-                    {
-                        var obj = _mapData.Map[x, y];
+                var sizeX = map.GetLength(0);
+                var sizeY = map.GetLength(1);
 
-                        if (obj is EmptySpace)
+                for (int x = 0; x < sizeX; x++)
+                {
+                    for (int y = 0; y < sizeY; y++)
+                    {
+                        var obj = map[x, y];
+
+                        switch(obj)
                         {
-                            _spriteBatch.Draw(_emptySpaceTexture, new Vector2(x * 32, y * 32), Color.White);
-                        }
-                        else if(obj is PlaceForBox)
-                        {
-                            _spriteBatch.Draw(_placeForBoxTexture, new Vector2(x * 32, y * 32), Color.White);
-                        }
-                        else if (obj is Box)
-                        {
-                            _spriteBatch.Draw(_boxTexture, new Vector2(x * 32, y * 32), Color.White);
-                        }
-                        else if (obj is Storekeeper)
-                        {
-                            _spriteBatch.Draw(_storekeeperTexture, new Vector2(x * 32, y * 32), Color.White);
-                        }
-                        else if (obj is Wall)
-                        {
-                            _spriteBatch.Draw(_wallTexture, new Vector2(x * 32, y * 32), Color.White);
+                            case GameObjectDraw.EmptySpace:
+                                _spriteBatch.Draw(_emptySpaceTexture, new Vector2(x * 34, y * 34), Color.White);
+                                break;
+                            case GameObjectDraw.PlaceForBox:
+                                _spriteBatch.Draw(_placeForBoxTexture, new Vector2(x * 34, y * 34), Color.White);
+                                break;
+                            case GameObjectDraw.BoxOnPlaceForBox:
+                                _spriteBatch.Draw(_pressedBoxTexture, new Vector2(x * 34, y * 34), Color.White);
+                                break;
+                            case GameObjectDraw.Wall:
+                                _spriteBatch.Draw(_wallTexture, new Vector2(x * 34, y * 34), Color.White);
+                                break;
+                            case GameObjectDraw.Storekeeper:
+                                _spriteBatch.Draw(_storekeeperTexture, new Vector2(x * 34, y * 34), Color.White);
+                                break;
+                            case GameObjectDraw.Box:
+                                _spriteBatch.Draw(_boxTexture, new Vector2(x * 34, y * 34), Color.White);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }

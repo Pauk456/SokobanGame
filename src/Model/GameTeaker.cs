@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using System.Collections.Concurrent;
-using SokobanGame.src.GameObjects;
 using SokobanGame.src.Presenter;
 using System.Timers;
 
@@ -19,7 +18,7 @@ namespace SokobanGame.src.Model
 
         public event GameTickerDelegate EventTicker;
 
-        private static readonly int timerInterval = 300;
+        private static readonly int timerInterval = 200;
 
         private long TeakCount;
 
@@ -67,7 +66,7 @@ namespace SokobanGame.src.Model
                 moveLogic.move(command);
                 if(winLogic.isWin())
                 {
-                    _event = Event.Win;
+                   // _event = Event.Win;
                 }
             }
 
