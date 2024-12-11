@@ -28,7 +28,7 @@ namespace SokobanGame.src.View
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            //_graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = true;
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
@@ -101,31 +101,41 @@ namespace SokobanGame.src.View
                 var sizeX = map.GetLength(0);
                 var sizeY = map.GetLength(1);
 
+                int mapWidth = sizeX * 34;
+                int mapHeight = sizeY * 34;
+
+                int screenWidth = _graphics.PreferredBackBufferWidth;
+                int screenHeight = _graphics.PreferredBackBufferHeight;
+
+                int offsetX = (screenWidth - mapWidth) / 2;
+                int offsetY = (screenHeight - mapHeight) / 2;
+
                 for (int x = 0; x < sizeX; x++)
                 {
                     for (int y = 0; y < sizeY; y++)
                     {
                         var obj = map[x, y];
+                        Vector2 position = new Vector2(offsetX + x * 34, offsetY + y * 34);
 
-                        switch(obj)
+                        switch (obj)
                         {
                             case GameObjectDraw.EmptySpace:
-                                _spriteBatch.Draw(_emptySpaceTexture, new Vector2(x * 34, y * 34), Color.White);
+                                _spriteBatch.Draw(_emptySpaceTexture, position, Color.White);
                                 break;
                             case GameObjectDraw.PlaceForBox:
-                                _spriteBatch.Draw(_placeForBoxTexture, new Vector2(x * 34, y * 34), Color.White);
+                                _spriteBatch.Draw(_placeForBoxTexture, position, Color.White);
                                 break;
                             case GameObjectDraw.BoxOnPlaceForBox:
-                                _spriteBatch.Draw(_pressedBoxTexture, new Vector2(x * 34, y * 34), Color.White);
+                                _spriteBatch.Draw(_pressedBoxTexture, position, Color.White);
                                 break;
                             case GameObjectDraw.Wall:
-                                _spriteBatch.Draw(_wallTexture, new Vector2(x * 34, y * 34), Color.White);
+                                _spriteBatch.Draw(_wallTexture, position, Color.White);
                                 break;
                             case GameObjectDraw.Storekeeper:
-                                _spriteBatch.Draw(_storekeeperTexture, new Vector2(x * 34, y * 34), Color.White);
+                                _spriteBatch.Draw(_storekeeperTexture, position, Color.White);
                                 break;
                             case GameObjectDraw.Box:
-                                _spriteBatch.Draw(_boxTexture, new Vector2(x * 34, y * 34), Color.White);
+                                _spriteBatch.Draw(_boxTexture, position, Color.White);
                                 break;
                             default:
                                 break;
@@ -138,5 +148,6 @@ namespace SokobanGame.src.View
 
             base.Draw(gameTime);
         }
+
     }
 }

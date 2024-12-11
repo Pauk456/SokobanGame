@@ -9,6 +9,7 @@ using SokobanGame.src.Presenter;
 using SokobanGame.src.View;
 using SokobanGame.src.Model;
 using SokobanGame.src.Model.GameObjects;
+using System.Reflection;
 
 namespace SokobanGame.src.Presenter
 {
@@ -87,16 +88,24 @@ namespace SokobanGame.src.Presenter
         public void setLevel(int level)
         {
             mapData = LevelBuilder.buildLevel(currentLevel);
+            model.setMapData(mapData);
         }
 
         public void modelTickHeandler(Event e)
         {
-            switch(e)
+            switch (e)
             {
                 case Event.GameOn:
-                    redraw(); break;
+                    redraw();
+                    break;
                 case Event.Win:
-                    nextLevel(); break;
+                {
+                    model.stopGame();
+                    redraw();
+                    nextLevel();
+                    model.startGame();
+                    break;
+                }
             }
         }
 

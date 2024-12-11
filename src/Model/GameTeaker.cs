@@ -18,7 +18,7 @@ namespace SokobanGame.src.Model
 
         public event GameTickerDelegate EventTicker;
 
-        private static readonly int timerInterval = 200;
+        private static readonly int timerInterval = 150;
 
         private long TeakCount;
 
@@ -38,8 +38,7 @@ namespace SokobanGame.src.Model
             commandQueue = new ConcurrentQueue<Command>();
 
             this.mapData = mapData;
-            moveLogic = new MoveLogic(mapData);
-            winLogic = new WinLogic(mapData);
+            setMapData(mapData);
         }
 
         public void start()
@@ -47,7 +46,11 @@ namespace SokobanGame.src.Model
             var tm = new TimerCallback(gameTick);
             timer = new System.Threading.Timer(tm, null, 0, timerInterval);
         }
-
+        public void setMapData(MapData mapData)
+        {
+            moveLogic = new MoveLogic(mapData);
+            this.winLogic = new WinLogic(mapData);
+        }
         public void addMoveInQueue(Command command)
         {
             commandQueue.Enqueue(command);
@@ -66,7 +69,8 @@ namespace SokobanGame.src.Model
                 moveLogic.move(command);
                 if(winLogic.isWin())
                 {
-                   // _event = Event.Win;
+                   _event = Event.Win;
+                   commandQueue.Clear();
                 }
             }
 

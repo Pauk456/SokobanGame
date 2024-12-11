@@ -10,9 +10,7 @@ using static SokobanGame.src.Model.GameTeaker;
 namespace SokobanGame.src.Model
 {
     internal class Model : IModel
-    { 
-        private MapData mapData;
-
+    {
         private GameTeaker gameTeaker;
 
         public delegate void ModelDelegate(Event e);
@@ -21,7 +19,6 @@ namespace SokobanGame.src.Model
 
         public Model(MapData mapData)
         { 
-            this.mapData  = mapData;
             gameTeaker = new GameTeaker(mapData);
             gameTeaker.EventTicker += OnTick;
         }
@@ -30,14 +27,12 @@ namespace SokobanGame.src.Model
         {
             gameTeaker.start();
         }
-
+        public void setMapData(MapData mapData)
+        {
+            gameTeaker.setMapData(mapData);
+        }
         private void OnTick(Event e)
         {
-            if(e == Event.Win)
-            {
-                stopGame();
-            }
-
             EventModel?.Invoke(e);
         }
 
